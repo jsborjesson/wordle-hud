@@ -41,37 +41,39 @@ export const guess = (word: string): Guess =>  {
 })
 export class WordleService {
 
+  guesses: Guess[] = []
+
   constructor() { }
 
-  getPossibleAnswers(guesses: Guess[]): string[] {
+  getPossibleAnswers(): string[] {
     return WORDS
-      .filter(this.filterGrayLetters(guesses))
-      .filter(this.filterGreenLetters(guesses))
-      .filter(this.filterYellowLetters(guesses))
+      .filter(this.filterGrayLetters())
+      .filter(this.filterGreenLetters())
+      .filter(this.filterYellowLetters())
   }
 
   // Exclude any words containing Gray letters
-  private filterGrayLetters(guesses: Guess[]): (word: string) => boolean {
-    const hints = this.getHints(guesses, Color.Gray)
+  private filterGrayLetters(): (word: string) => boolean {
+    const hints = this.getHints(Color.Gray)
 
     return (word: string) => !hints.some((hint) => word.includes(hint.letter))
   }
 
   // Exclude any words not containing Green letters in the right spot
-  private filterGreenLetters(guesses: Guess[]): (word: string) => boolean {
-    const hints = this.getHints(guesses, Color.Green)
+  private filterGreenLetters(): (word: string) => boolean {
+    const hints = this.getHints(Color.Green)
 
     return (word: string) => hints.every((hint) => word[hint.position] == hint.letter)
   }
 
   // Exclude any words not containing Yellow letters, or containing them at the yellow spot
-  private filterYellowLetters(guesses: Guess[]): (word: string) => boolean {
-    const hints = this.getHints(guesses, Color.Yellow)
+  private filterYellowLetters(): (word: string) => boolean {
+    const hints = this.getHints(Color.Yellow)
 
     return (word: string) => hints.every((hint) => word.includes(hint.letter) && word[hint.position] != hint.letter)
   }
 
-  private getHints(guesses: Guess[], color: Color): Hint[] {
-    return guesses.flat().filter((hint) => hint.color == color)
+  private getHints(color: Color): Hint[] {
+    return this.guesses.flat().filter((hint) => hint.color == color)
   }
 }

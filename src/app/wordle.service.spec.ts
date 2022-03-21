@@ -15,11 +15,11 @@ describe('WordleService', () => {
   });
 
   it('should filter down words', () => {
-    const guesses = [
+    service.guesses = [
       guess("F R? U I! T?"),
       guess("T! I? R? E? D"),
     ]
 
-    expect(service.getPossibleAnswers(guesses)).toEqual(['their'])
+    expect(service.getPossibleAnswers()).toEqual(['their'])
   });
 });
