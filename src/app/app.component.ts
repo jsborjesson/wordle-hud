@@ -13,8 +13,8 @@ export class AppComponent {
 
   constructor(private wordleService: WordleService) {}
 
-  makeGuess() {
-    const letters = this.newGuess.split("")
+  makeGuess(word: string) {
+    const letters = word.split("")
 
     if (letters.length != 5) {
       throw new Error("Only 5 letter words are used")

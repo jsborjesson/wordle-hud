@@ -1,7 +1,7 @@
 <main class="px-4 py-12 mx-auto w-80">
     <h1 class="text-3xl text-center">Wordle HUD</h1>
 
-    <form class="flex justify-center mt-4" (submit)="makeGuess()">
+    <form class="flex justify-center mt-4" (submit)="makeGuess(newGuess)">
         <input class="h-12 text-xl text-center border w-80" [(ngModel)]="newGuess" name="newGuess"/>
     </form>
 
@@ -21,6 +21,6 @@
     </div>
 
     <div class="flex flex-wrap justify-center mt-4">
-        <span class="p-1" *ngFor="let word of getPossibleAnswers()">{{word}}</span>
+        <span class="p-1" *ngFor="let word of getPossibleAnswers()" (click)="makeGuess(word)">{{word}}</span>
     </div>
 </main>
