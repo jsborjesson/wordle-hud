@@ -43,14 +43,6 @@ export class WordleService {
 
   constructor() { }
 
-  getWordle(): Guess[] {
-    return [
-      guess("A B O R? T"),
-      guess("W? R? E? C K"),
-      guess("S E! W? E! R?")
-    ]
-  }
-
   getPossibleAnswers(guesses: Guess[]): string[] {
     return WORDS
       .filter(this.filterGrayLetters(guesses))
@@ -60,29 +52,26 @@ export class WordleService {
 
   // Exclude any words containing Gray letters
   private filterGrayLetters(guesses: Guess[]): (word: string) => boolean {
-    const badLetters = guesses
-      .flat()
-      .filter((hint) => hint.color == Color.Gray)
-      .map((hint) => hint.letter)
+    const hints = this.getHints(guesses, Color.Gray)
 
-    return (word: string) => !badLetters.some((letter) => word.includes(letter))
+    return (word: string) => !hints.some((hint) => word.includes(hint.letter))
   }
 
   // Exclude any words not containing Green letters in the right spot
   private filterGreenLetters(guesses: Guess[]): (word: string) => boolean {
-    const fixedLetters = guesses
-      .flat()
-      .filter((hint) => hint.color == Color.Green)
+    const hints = this.getHints(guesses, Color.Green)
 
-    return (word: string) => fixedLetters.every((hint) => word[hint.position] == hint.letter)
+    return (word: string) => hints.every((hint) => word[hint.position] == hint.letter)
   }
 
   // Exclude any words not containing Yellow letters, or containing them at the yellow spot
   private filterYellowLetters(guesses: Guess[]): (word: string) => boolean {
-    const goodLetters = guesses
-      .flat()
-      .filter((hint) => hint.color == Color.Yellow)
+    const hints = this.getHints(guesses, Color.Yellow)
 
-    return (word: string) => goodLetters.every((hint) => word.includes(hint.letter) && word[hint.position] != hint.letter)
+    return (word: string) => hints.every((hint) => word.includes(hint.letter) && word[hint.position] != hint.letter)
+  }
+
+  private getHints(guesses: Guess[], color: Color): Hint[] {
+    return guesses.flat().filter((hint) => hint.color == color)
   }
 }
