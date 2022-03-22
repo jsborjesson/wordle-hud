@@ -4,12 +4,10 @@ import { Color, Guess, WordleService } from './wordle.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'wordle-hud';
-
-  newGuess: string = '';
+  newGuess = '';
 
   constructor(private wordleService: WordleService) {}
 

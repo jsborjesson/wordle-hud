@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WORDS } from './words';
 
+import { WORDS } from './words';
 
 export enum Color {
   Gray,
@@ -8,9 +8,9 @@ export enum Color {
   Green
 }
 export interface Hint {
-  letter: string;
-  color: Color;
-  position: number;
+  letter: string
+  color: Color
+  position: number
 }
 export type Guess = [Hint, Hint, Hint, Hint, Hint]
 
@@ -18,10 +18,7 @@ export type Guess = [Hint, Hint, Hint, Hint, Hint]
   providedIn: 'root'
 })
 export class WordleService {
-
   guesses: Guess[] = []
-
-  constructor() { }
 
   getPossibleAnswers(): string[] {
     return WORDS
