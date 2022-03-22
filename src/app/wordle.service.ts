@@ -14,28 +14,6 @@ export interface Hint {
 }
 export type Guess = [Hint, Hint, Hint, Hint, Hint]
 
-export const guess = (word: string): Guess =>  {
-  const letters = word.split(" ")
-
-  if (letters.length != 5) {
-    throw new Error("Only 5 letter words are used")
-  }
-
-  return letters.map((shorthand, position) => {
-    const [letter, colorChar] = shorthand.toLowerCase()
-
-    switch (colorChar) {
-      case "?":
-        return { position, letter, color: Color.Yellow }
-      case "!":
-        return { position, letter, color: Color.Green }
-      default:
-        return { position, letter, color: Color.Gray }
-    }
-  }) as Guess
-}
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -52,9 +30,10 @@ export class WordleService {
       .filter(this.filterYellowLetters())
   }
 
-  // Exclude any words containing Gray letters
+  // Exclude any words containing Gray letters that are not also Green
   private filterGrayLetters(): (word: string) => boolean {
-    const hints = this.getHints(Color.Gray)
+    const greenLetters = this.getHints(Color.Green).map((hint) => hint.letter)
+    const hints = this.getHints(Color.Gray).filter((hint) => !greenLetters.includes(hint.letter))
 
     return (word: string) => !hints.some((hint) => word.includes(hint.letter))
   }
