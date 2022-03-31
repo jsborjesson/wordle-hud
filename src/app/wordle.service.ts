@@ -27,6 +27,24 @@ export class WordleService {
       .filter(this.filterYellowLetters())
   }
 
+  makeGuess(word: string): void {
+    const letters = word.split("")
+
+    if (letters.length != 5) {
+      throw new Error("Only 5 letter words are used")
+    }
+
+    const hints = this.getHints(Color.Green)
+
+    const guess: Guess = letters.map((letter, position) => ({
+      letter,
+      position,
+      color: hints.find((h) => h.color == Color.Green && h.position == position && h.letter == letter) ? Color.Green : Color.Gray
+    })) as Guess
+
+    this.guesses.push(guess)
+  }
+
   // Exclude any words containing Gray letters that are not also Green
   private filterGrayLetters(): (word: string) => boolean {
     const greenLetters = this.getHints(Color.Green).map((hint) => hint.letter)

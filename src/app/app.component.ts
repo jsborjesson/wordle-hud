@@ -12,16 +12,8 @@ export class AppComponent {
   constructor(private wordleService: WordleService) {}
 
   makeGuess(word: string) {
-    const letters = word.split("")
-
-    if (letters.length != 5) {
-      throw new Error("Only 5 letter words are used")
-    }
-
-    const guess: Guess = letters.map((letter, position) => ({ letter, position, color: Color.Gray})) as Guess
-
-    this.wordleService.guesses.push(guess)
-    this.newGuess = '';
+    this.wordleService.makeGuess(word)
+    this.newGuess = ''
   }
 
   changeColor(guess: number, hint: number) {

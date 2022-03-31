@@ -31,8 +31,24 @@ describe('WordleService', () => {
     service = TestBed.inject(WordleService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('should add words keeping green letters', () => {
+    service.guesses = [
+      guess("F R? U I! T?"),
+      guess("T! I? R? E? D"),
+    ]
+
+    service.makeGuess('their')
+
+    expect(service.guesses[service.guesses.length - 1]).toEqual(guess("T! H E I! R"))
+  });
+
+  it('should not make the wrong letters green', () => {
+    service.guesses = [
+      guess("F R? U I! T?"),
+    ]
+
+    service.makeGuess('tired')
+    expect(service.guesses[service.guesses.length - 1]).toEqual(guess("T I R E D"))
   });
 
   it('should filter down words', () => {
