@@ -70,4 +70,12 @@ describe('WordleService', () => {
 
     expect(service.getPossibleAnswers()).toEqual(['slosh'])
   });
+
+  it('should not filter gray letters that are also yellow', () => {
+    service.guesses = [
+      guess("T A? P A S?"),
+    ]
+
+    expect(service.getPossibleAnswers().length).toBeGreaterThan(0)
+  });
 });
